@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hello World</title>
+    <script type="text/javascript" src="Resources/dynamsoft.webtwain.initiate.js"></script>
+    <script type="text/javascript" src="Resources/dynamsoft.webtwain.config.js"></script>
+    <style>
+        .image-container {
+            width: 800px;
+            height: 500px;
+            overflow: auto;
+        }
+
+        .image-container img {
+            width: 800px;
+            height: 600px;
+            object-fit: cover;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr 1fr;
+        }
+
+        .grid-item {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div id="dwtcontrolContainer"></div> -->
+
+    <div class="grid-container">
+
+        <div class="grid-item">
+            <div class="image-container">
+                <img src="Capture.JPG" alt="Image 1">
+                <img src="Capture.JPG" alt="Image 2">
+                <img src="Capture.JPG" alt="Image 3">
+                <img src="Capture.JPG" alt="Image 4">
+            </div>
+        </div>
+
+
+
+        <div class="grid-item">
+            <label for="scaners">Select a Source:</label>
+            <select id="scaners">
+                <option value="TWAIN2 FreeImage Software Scanner">TWAIN2 FreeImage Software Scanner</option>
+                <option value="Twain64-TWAIN2 FreeImage Software">Twain64-TWAIN2 FreeImage Software</option>
+            </select>
+            <br>
+            <br>
+            <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+            <label for="vehicle1">Show UI</label>
+            <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+            <label for="vehicle2"> Auto Feeder</label>
+
+            <br>
+            <br>
+
+            <input type="radio" id="html" name="fav_language" value="HTML">
+            <label for="html">HTML</label><br>
+            <input type="radio" id="css" name="fav_language" value="CSS">
+            <label for="css">CSS</label><br>
+            <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+            <label for="javascript">JavaScript</label>
+
+            <br>
+            <br>
+
+            <label for="Resolution">Resolution</label>
+            <select id="Resolution">
+                <option value="100px">100px</option>
+                <option value="200px">200px</option>
+            </select>
+            <br>
+            <br>
+            <input type="button" value="Scan and Save 1" onclick="AcquireImage();" />
+            <br>
+            <br>
+            <input type="button" value="Scan and Save 2" onclick="AcquireImage();" />
+            <br>
+            <br>
+            <input type="button" value="Remove Blank Images" onclick="AcquireImage();" />
+            <br>
+            <br>
+            
+            <input type="button" value="Remove All Images" onclick="AcquireImage();" />
+            <br>
+            <br>
+            <input type="button" value="Acquire" onclick="AcquireImage();" />
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var DWObject;
+        function Dynamsoft_OnReady() {
+            DWObject = Dynamsoft.DWT.GetWebTwain('dwtcontrolContainer');
+        }
+        function AcquireImage() {
+            if (DWObject) {
+                DWObject.SelectSourceAsync().then(function () {
+                    return DWObject.AcquireImageAsync({
+                        IfDisableSourceAfterAcquire: true
+                    });
+                }).then(function () {
+                    return DWObject.CloseSourceAsync();
+                }).catch(function (exp) {
+                    alert(exp.message);
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
